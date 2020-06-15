@@ -1,0 +1,124 @@
+{
+    "auto-close-tag.enableAutoCloseSelfClosingTag": true,
+    "auto-close-tag.SublimeText3Mode": true,
+    "bracket-pair-colorizer-2.colors": [
+        "crimson",
+        "darkorange",
+        "mediumseagreen",
+        "LightSkyBlue"
+    ],
+    "csharp.format.enable": false,
+    "color-highlight.markerType": "dot-before",
+    "editor.cursorStyle": "block",
+    "editor.fontSize": 14,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "editor.rulers": [150],
+    "editor.tabSize": 2,
+    "files.trimTrailingWhitespace": true,
+    "gitlens.advanced.messages": {
+        "suppressShowKeyBindingsNotice": true
+    },
+    "git.path": "C:\\Program Files\\Git\\cmd\\git.exe",
+    "indentRainbow.colors": [
+        "rgba(16,16,16,0.1)",
+        "rgba(16,16,16,0.3)",
+        "rgba(16,16,16,0.6)",
+        "rgba(16,16,16,0.4)",
+        "rgba(16,16,16,0.2)"
+    ],
+    "npm.enableScriptExplorer": true,
+    "todohighlight.isCaseSensitive": true,
+    "telemetry.enableTelemetry": false,
+    "todohighlight.keywords": [
+        {
+            "text": "DEPRECATED",
+            "color": "black",
+            "backgroundColor": "yellow",
+        },
+        {
+            "text": "FIXME",
+            "color": "white",
+            "backgroundColor": "red",
+        },
+        {
+            "text": "REVIEW",
+            "color": "blue",
+            "backgroundColor": "white",
+        },
+        {
+            "text": "STUB",
+            "color": "white",
+            "backgroundColor": "grey",
+        },
+        {
+            "text": "TODO",
+            "color": "white",
+            "backgroundColor": "green",
+        },
+    ],
+    "todo-tree.tags": [
+        "DEPRECATED",
+        "FIXME",
+        "REVIEW",
+        "STUB",
+        "TODO"
+    ],
+    "todo-tree.customHighlight": {
+        "DEPRECATED": {
+            "icon": "stop",
+            "iconColour": "yellow"
+        },
+        "FIXME": {
+            "icon": "alert",
+            "iconColour": "red"
+        },
+        "REVIEW": {
+            "icon": "search",
+            "iconColour": "white"
+        },
+        "STUB": {
+            "icon": "beaker",
+            "iconColour": "grey"
+        },
+        "TODO": {
+            "icon": "pin",
+            "type": "line"
+        }
+    },
+    "workbench.colorCustomizations": {
+        "editorIndentGuide.activeBackground": "#20b0f3"
+    },
+    "workbench.colorTheme": "Horizon Bold",
+    "workbench.iconTheme": "vscode-icons",
+    "todo-tree.highlights.customHighlight": {
+        "DEPRECATED": {
+            "icon": "stop",
+            "iconColour": "yellow"
+        },
+        "FIXME": {
+            "icon": "alert",
+            "iconColour": "red"
+        },
+        "REVIEW": {
+            "icon": "search",
+            "iconColour": "white"
+        },
+        "STUB": {
+            "icon": "beaker",
+            "iconColour": "grey"
+        },
+        "TODO": {
+            "icon": "pin",
+            "type": "line"
+        }
+    },
+    "todo-tree.general.tags": [
+        "DEPRECATED",
+        "FIXME",
+        "REVIEW",
+        "STUB",
+        "TODO"
+    ]
+}
