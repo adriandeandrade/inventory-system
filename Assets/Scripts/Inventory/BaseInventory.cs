@@ -6,11 +6,17 @@ using UnityEngine.EventSystems;
 
 namespace Inventory
 {
-    public abstract class BaseInventory : MonoBehaviour
+    public enum InventoryCloseType { DISABLE, MINIMIZE }
+
+    public abstract class BaseInventory : MonoBehaviour, IPointerDownHandler
     {
         [Header("Base Inventory UI Configuration")]
         [SerializeField] protected BaseInventoryData inventoryData; // Starting data for the inventory. TODO: Look at base inventory data. Only contains inventory size now.
         [SerializeField] protected ItemDatabase itemDatabase; // TODO: Move this so it's a static class or singleton.
+
+        [Space]
+        [SerializeField] protected InventoryCloseType inventoryCloseType;
+        [SerializeField] protected ButtonController minimizeButton;
 
         [Header("Inventory Slot Configuration")]
         [SerializeField] protected BaseItemSlot[] inventorySlots; // The slots that belong to this inventory.
@@ -32,6 +38,11 @@ namespace Inventory
         protected virtual void Awake()
         {
             toolTip = FindObjectOfType<InventoryToolTip>();
+            
+            if(minimizeButton != null)
+            {
+                minimizeButton.OnClicked.AddListener(OnCloseButtonClicked);
+            }
         }
 
         protected virtual void Start()
@@ -58,6 +69,22 @@ namespace Inventory
             trigger.triggers.Add(eventTrigger);
         }
 
+        protected void OnCloseButtonClicked()
+        {
+            switch(inventoryCloseType)
+            {
+                case InventoryCloseType.DISABLE:
+                    InventoryDisable();
+                    break;
+                case InventoryCloseType.MINIMIZE:
+                    InventoryMinimize();
+                    break;
+            }
+        }
+
+        protected abstract void InventoryDisable();
+        protected abstract void InventoryMinimize();
+
         #region Inventory Functions
 
         public abstract bool AddItem(BaseItem itemToAdd);
@@ -82,7 +109,7 @@ namespace Inventory
         {
             if (toolTip != null) toolTip.UpdateToolTip(slot.ItemInSlot);
 
-            slot.SetOutlineColor(slotHoverColor);
+            slot.SetHovered();
         }
 
         protected virtual void OnPointerExit(BaseItemSlot slot, PointerEventData pointerData)
@@ -91,11 +118,11 @@ namespace Inventory
 
             if (slot == currentlySelectedSlot)
             {
-                slot.SetOutlineColor(slotSelectedColor);
+                slot.Select();
                 return;
             }
 
-            slot.SetOutlineColor(Color.clear);
+            slot.Deselect();
         }
 
         protected virtual void OnPointerDown(BaseItemSlot slot, PointerEventData pointerData)
@@ -134,7 +161,7 @@ namespace Inventory
             {
                 DeselectSlot(currentlySelectedSlot);
                 currentlySelectedSlot = slot;
-                slot.Select(slotSelectedColor);
+                slot.Select();
             }
         }
 
@@ -176,6 +203,19 @@ namespace Inventory
         {
             pointerSlot.transform.position = Input.mousePosition;
             pointerSlot.gameObject.SetActive(toggle);
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            BaseItemSlot slotUnderMouse = eventData.pointerCurrentRaycast.gameObject.GetComponent<BaseItemSlot>();
+
+            if(slotUnderMouse == null)
+            {
+                if(currentlySelectedSlot != null)
+                {
+                    currentlySelectedSlot.Deselect();
+                }
+            }
         }
         #endregion
 

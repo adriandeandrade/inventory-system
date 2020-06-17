@@ -116,6 +116,16 @@ public class ShopInventory : BaseInventory
 
     }
 
+    protected override void InventoryDisable()
+    {
+        CloseShop();
+    }
+
+    protected override void InventoryMinimize()
+    {
+        Debug.Log("Shop minimized");
+    }
+
     #endregion
 
 

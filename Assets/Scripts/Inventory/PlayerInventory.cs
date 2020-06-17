@@ -195,5 +195,16 @@ namespace Inventory
         }
 
         #endregion
+
+        protected override void InventoryDisable()
+        {
+            Debug.Log("Inventory Disabled");
+        }
+
+        protected override void InventoryMinimize()
+        {
+            Debug.Log("Inventory Minimized");
+        }
+
     }
 }

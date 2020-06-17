@@ -39,18 +39,15 @@ namespace Inventory
 
         // Private Variables
         protected RectTransform iconTransform;
-        protected Vector3 iconStartPos;
         protected BaseItemSlot pointerSlot;
-
-        // Events
-        public Action<BaseItemSlot> OnSlotPointerEntered;
-        public Action<BaseItemSlot> OnSlotPointerExited;
-        public Action<BaseItemSlot> OnSlotPointerDown;
+        protected Vector3 iconStartPos;
+        protected ButtonController buttonController;
 
         #region Unity Functions
         private void Awake()
         {
             iconTransform = slotItemIcon.GetComponent<RectTransform>();
+            buttonController = GetComponent<ButtonController>();
         }
 
         private void Start()
@@ -77,22 +74,25 @@ namespace Inventory
             }
 
             itemInSlot = item;
-            //slotItemIcon.color = item.debugSpriteColor; // TODO: Use sprite instead of color here.
             slotItemIcon.color = Color.white;
             slotItemIcon.sprite = item.itemIcon;
-            //Debug.Log("Slot was updated");
         }
 
-        public void Select(Color outlineColor)
+        public void Select()
         {
             Selected = true;
-            SetOutlineColor(outlineColor);
+            buttonController.SetSelectedSprite();
         }
 
         public void Deselect()
         {
             Selected = false;
-            slotOutLine.enabled = false;
+            buttonController.SetOriginalSprite();
+        }
+
+        public void SetHovered()
+        {
+            buttonController.SetHoveredSprite();
         }
 
         public void ClearSlot()
