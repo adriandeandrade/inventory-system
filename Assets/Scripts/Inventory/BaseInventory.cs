@@ -29,6 +29,7 @@ namespace Inventory
         [Header("Slot Outline Colors")]
         [SerializeField] protected Color slotHoverColor;
         [SerializeField] protected Color slotSelectedColor;
+        [SerializeField] protected Color slotSelectedColor1;
 
         // Private Variables
 
@@ -93,7 +94,7 @@ namespace Inventory
 
         }
 
-        public void UpdateSlots()
+        public virtual void UpdateInventory()
         {
             foreach (BaseItemSlot slot in inventorySlots)
             {

@@ -107,7 +107,7 @@ namespace Inventory
             DeselectSlot(currentlySelectedSlot);
             SelectSlot(toSlot);
 
-            UpdateSlots();
+            UpdateInventory();
 
             Debug.Log("Items swapped");
         }

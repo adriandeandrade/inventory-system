@@ -1,14 +1,22 @@
 ﻿using Inventory;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ShopInventory : BaseInventory
 {
     [Header("Shop Inventory UI Configuration")]
     [SerializeField] private GameObject shopUI;
+    [Space]
+    [SerializeField] private Image displayItemImage;
+    [SerializeField] private TextMeshProUGUI displayItemDescText;
+    [SerializeField] private TextMeshProUGUI displayItemNameText;
+    [SerializeField] private ButtonController buyButton;
 
+    // TODO: Seperate this stuff into a seperate ShopInteractable class.
     private PlayerInventory customer;
     private Interactable shopInteractable;
 
@@ -24,6 +32,7 @@ public class ShopInventory : BaseInventory
     {
         base.Start();
         GenerateRandomItems();
+        DisableBuyButton();
     }
 
     public void OpenShop()
@@ -41,7 +50,7 @@ public class ShopInventory : BaseInventory
 
     public void CloseShop()
     {
-        if(customer != null)
+        if (customer != null)
         {
             customer.IsShopping = false;
             customer = null;
@@ -88,7 +97,7 @@ public class ShopInventory : BaseInventory
     {
         int itemCount = 10;
 
-        for(int i =0; i < itemCount; i++)
+        for (int i = 0; i < itemCount; i++)
         {
             int randomIndex = Random.Range(0, inventorySlots.Length - 1);
             inventorySlots[randomIndex].UpdateSlot(itemDatabase.GetItemClone(itemDatabase.items[Random.Range(0, itemDatabase.items.Count)]));
@@ -97,14 +106,23 @@ public class ShopInventory : BaseInventory
 
     protected override void OnRightClick(BaseItemSlot slot, PointerEventData pointerData)
     {
-        BuyItem(slot);
+        Debug.Log("Slot right clicked.");
     }
 
     #region Pointer Event Callbacks
 
     protected override void OnPointerDown(BaseItemSlot slot, PointerEventData pointerData)
     {
-        Debug.Log(slot.ItemInSlot.itemValue);
+        base.OnPointerDown(slot, pointerData);
+
+        if(!slot.ContainsItem)
+        {
+            currentlySelectedSlot = null;
+            UpdateInventory();
+            return;
+        }
+
+        UpdateInventory();
     }
 
     #endregion
@@ -128,5 +146,92 @@ public class ShopInventory : BaseInventory
 
     #endregion
 
+    #region UI Functions
 
+    public override void UpdateInventory()
+    {
+        base.UpdateInventory();
+        UpdateDisplayPanel();
+
+        if (currentlySelectedSlot != null)
+        {
+            EnableBuyButton();
+        }
+
+    }
+    private void UpdateDisplayPanel()
+    {
+        if (currentlySelectedSlot == null)
+        {
+            ResetDisplayPanel();
+            return;
+        }
+
+        SetItemDisplayImage(currentlySelectedSlot.ItemInSlot.itemIcon);
+        SetItemDescriptionText(currentlySelectedSlot.ItemInSlot.itemDescription);
+        SetItemNameText(currentlySelectedSlot.ItemInSlot.itemName);
+    }
+
+    private void SetItemNameText(string itemName)
+    {
+        if (displayItemNameText != null)
+        {
+            displayItemNameText.SetText(itemName);
+
+            if (currentlySelectedSlot != null)
+                displayItemDescText.color = currentlySelectedSlot.ItemInSlot.GetTitleColor();
+        }
+        else
+            Debug.LogError("Display item name text not found. Make sure it's referenced in the inspector!");
+    }
+
+    private void SetItemDescriptionText(string newDescription)
+    {
+        if (displayItemDescText != null)
+        {
+            displayItemDescText.SetText(newDescription);
+        }
+        else
+            Debug.LogError("Display item description text not found. Make sure it's referenced in the inspector!");
+    }
+
+    private void SetItemDisplayImage(Sprite newItem = null)
+    {
+        if(newItem == null)
+        {
+            displayItemImage.sprite = null;
+            displayItemImage.color = Color.clear;
+            return;
+        }
+
+        if (displayItemImage != null)
+        {
+            displayItemImage.sprite = newItem;
+            displayItemImage.color = Color.white;
+        }
+        else
+        {
+            Debug.LogError("Display item image not found. Make sure it's referenced in the inspector!");
+        }
+    }
+
+    private void EnableBuyButton()
+    {
+        buyButton.Enable();
+    }
+
+    private void DisableBuyButton()
+    {
+        buyButton.Disable();
+    }
+
+    private void ResetDisplayPanel()
+    {
+        SetItemNameText("");
+        SetItemDescriptionText("");
+        SetItemDisplayImage();
+        DisableBuyButton();
+    }
+
+    #endregion
 }

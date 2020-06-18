@@ -11,7 +11,9 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField] private bool doScaleAnimation = true;
     [SerializeField] private bool switchSpritesManually = false;
     [SerializeField] private Vector3 hoverSize = new Vector3(1.1f, 1.1f, 1f);
+
     [Space]
+
     [SerializeField] private Sprite originalSprite;
     [SerializeField] private Sprite hoveredSprite;
     [SerializeField] private Sprite selectedSprite;
@@ -40,30 +42,40 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
+        if (isDisabled) return;
+
         if(doScaleAnimation)
             buttonImage.transform.DOScale(hoverSize, 0.1f).SetUpdate(true);
 
         if (switchSpritesManually)
             SetHoveredSprite();
+
+        OnMouseEnter?.Invoke();
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
+        if (isDisabled) return;
+
         if (doScaleAnimation)
             buttonImage.transform.DOScale(new Vector3(1f, 1f, 1f), 0.1f).SetUpdate(true);
 
         if (switchSpritesManually)
             SetOriginalSprite();
+
+        OnMouseExit?.Invoke();
     }
 
     public void Enable()
     {
         isDisabled = false;
+        buttonImage.sprite = originalSprite;
     }
 
     public void Disable()
     {
         isDisabled = true;
+        buttonImage.sprite = disabledSprite;
     }
 
     public void SetSelectedSprite()

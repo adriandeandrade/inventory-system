@@ -12,12 +12,6 @@ public class InventoryToolTip : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemValueText;
     [SerializeField] private RectTransform toolTipBackground;
 
-    [SerializeField] private Color commonColor;
-    [SerializeField] private Color unCommonColor;
-    [SerializeField] private Color rareColor;
-    [SerializeField] private Color epicColor;
-    [SerializeField] private Color legendaryColor;
-
     private void Start()
     {
         gameObject.SetActive(false);
@@ -33,7 +27,7 @@ public class InventoryToolTip : MonoBehaviour
             return;
         }
 
-        SetTitleText(item.itemName, item.rarityType);
+        SetTitleText(item);
         itemDescriptionText.SetText(item.itemDescription);
         gameObject.SetActive(true);
         LayoutRebuilder.ForceRebuildLayoutImmediate(toolTipBackground);
@@ -44,31 +38,9 @@ public class InventoryToolTip : MonoBehaviour
         transform.position = Input.mousePosition;
     }
 
-    private void SetTitleText(string newText, RarityType itemRarityType)
+    private void SetTitleText(BaseItem item)
     {
-        itemNameText.SetText(newText);
-
-        switch(itemRarityType)
-        {
-            case RarityType.Common:
-                itemNameText.color = commonColor;
-                break;
-            case RarityType.Uncommon:
-                itemNameText.color = unCommonColor;
-                break;
-            case RarityType.Rare:
-                itemNameText.color = rareColor;
-                break;
-            case RarityType.Epic:
-                itemNameText.color = epicColor;
-                break;
-            case RarityType.Legendary:
-                itemNameText.color = legendaryColor;
-                break;
-
-            default:
-                itemNameText.color = Color.white;
-                break;
-        }
+        itemNameText.SetText(item.itemName);
+        itemNameText.color = item.GetTitleColor();
     }
 }
