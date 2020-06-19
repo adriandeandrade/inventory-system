@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement style="height: 425px; margin-left: 15px; margin-right: 15px; margin-top: 15px; margin-bottom: 15px; position: relative; justify-content: flex-start; align-items: center; width: 428px;">
+        <ui:Label text="Equipment Item Editor" style="-unity-font-style: normal; -unity-font: url(&apos;/Assets/Fonts/Jost/Jost-Regular.ttf&apos;); font-size: 15px; -unity-text-align: middle-center; white-space: nowrap;" />
+    </ui:VisualElement>
+</ui:UXML>

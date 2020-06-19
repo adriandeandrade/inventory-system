@@ -11,7 +11,7 @@ public static class ItemRarityColor
 
 namespace Inventory
 {
-    public enum ItemType { Default, Equipment, Food }
+    
     public enum RarityType { Common, Uncommon, Rare, Epic, Legendary }
     public abstract class BaseItem : ScriptableObject
     {
