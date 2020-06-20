@@ -70,8 +70,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 155aa98ef00866940bb12871d71d9145, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 5d1cf8818cf359f47a10784c67b9b519, type: 3}
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -137,11 +137,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doScaleAnimation: 1
-  switchSprites: 1
+  switchSpritesManually: 0
   hoverSize: {x: 1.1, y: 1.1, z: 1}
-  originalSprite: {fileID: 21300000, guid: 155aa98ef00866940bb12871d71d9145, type: 3}
-  hoveredSprite: {fileID: 21300000, guid: 95521febaa2833a439c9ab3d9cbe347a, type: 3}
-  selectedSprite: {fileID: 21300000, guid: f37b8e1fb5351c241931f0dd95a41136, type: 3}
+  originalSprite: {fileID: 21300000, guid: 5d1cf8818cf359f47a10784c67b9b519, type: 3}
+  hoveredSprite: {fileID: 21300000, guid: 3c0f8bdb70d52cf44b6f818be02925d8, type: 3}
+  selectedSprite: {fileID: 21300000, guid: 084deac08ba6df049bbe4204de18127c, type: 3}
   disabledSprite: {fileID: 0}
   OnClicked:
     m_PersistentCalls:
