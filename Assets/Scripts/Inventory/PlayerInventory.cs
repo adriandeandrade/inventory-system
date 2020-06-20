@@ -65,7 +65,7 @@ namespace Inventory
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                AddItem(itemDatabase.GetItem("item_wooden_sword"));
+                AddItem(itemDatabase.GetItem("item_gold_sword"));
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))

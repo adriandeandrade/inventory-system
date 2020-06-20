@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="item-object-field-container" style="width: 100%; align-items: stretch; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; height: 37.66667px; flex-wrap: wrap-reverse;">
+        <uie:ObjectField label="Object Field" name="item-object-field" style="width: 90%; height: 25px; top: auto; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; align-items: flex-start; justify-content: flex-start; padding-left: 4px; -unity-text-align: middle-left; white-space: normal; font-size: 12px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;" />
+        <ui:VisualElement name="item-object-field-remove-button" style="width: 25px; height: 25px; flex-wrap: nowrap; left: auto; bottom: auto; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-direction: column; flex-shrink: 0; right: auto; align-items: center; justify-content: flex-start; top: auto;">
+            <ui:Button text="-" name="button-remove" style="width: 100%; align-items: flex-end; justify-content: center; flex-wrap: nowrap; flex-direction: column; position: relative; top: auto; left: auto; right: 0; height: 100%; background-color: rgb(178, 39, 39); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 12px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
