@@ -12,27 +12,13 @@ namespace Inventory
         protected override void Start()
         {
             base.Start();
-            playerInventoryData = inventoryData as PlayerInventoryData;
-
-
-            if (playerInventoryData.startWithDefault)
-            {
-                PopulateDefaultInventory();
-            }
         }
 
         protected override void GenerateSlots()
         {
-            if (inventoryData == null)
+            for (int i = 0; i < slotAmount; i++)
             {
-                Debug.LogError($"Inventory object is null. Make sure you specified an inventory data object.");
-
-                return;
-            }
-
-            for (int i = 0; i < inventoryData.inventorySize; i++)
-            {
-                GameObject slotInstance = Instantiate(slotPrefab, Vector2.zero, Quaternion.identity, slotParent);
+                GameObject slotInstance = Instantiate(slotPrefab, Vector2.zero, Quaternion.identity, slotContainer);
                 slotInstance.name = $"Slot{i}";
 
                 BaseItemSlot baseSlot = slotInstance.GetComponent<BaseItemSlot>();
@@ -48,12 +34,12 @@ namespace Inventory
                 inventorySlots[i] = baseSlot;
             }
 
-            pointerSlot.transform.SetSiblingIndex(slotParent.childCount - 1); // Sets the pointer slot at the bottom of the hierarchy so it renders infront of everything.
+            pointerSlot.transform.SetSiblingIndex(slotContainer.childCount - 1); // Sets the pointer slot at the bottom of the hierarchy so it renders infront of everything.
         }
 
         private void PopulateDefaultInventory()
         {
-            if (playerInventoryData.defaultInventoryItems.Count > inventoryData.inventorySize) return;
+            if (playerInventoryData.defaultInventoryItems.Count > slotAmount) return;
 
             foreach (BaseItem item in playerInventoryData.defaultInventoryItems)
             {
@@ -85,16 +71,17 @@ namespace Inventory
         {
             if (itemToAdd == null) return false;
 
-            foreach (BaseItemSlot slot in inventorySlots)
-            {
-                if (!slot.ContainsItem)
-                {
-                    slot.UpdateSlot(itemToAdd);
-                    return true;
-                }
-            }
+            BaseItemSlot emptySlot = HasEmptySlot();
 
-            return false;
+            if(emptySlot != null)
+            {
+                emptySlot.UpdateSlot(itemToAdd);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected override void SwapItemsInSlot(BaseItemSlot fromSlot, BaseItemSlot toSlot)
@@ -116,21 +103,10 @@ namespace Inventory
 
         #region Pointer Event Callbacks
 
-        protected override void OnPointerEnter(BaseItemSlot slot, PointerEventData pointerData)
-        {
-            base.OnPointerEnter(slot, pointerData);
-        }
-
-        protected override void OnPointerExit(BaseItemSlot slot, PointerEventData pointerData)
-        {
-            base.OnPointerExit(slot, pointerData);
-        }
-
         protected override void OnPointerDown(BaseItemSlot slot, PointerEventData pointerData)
         {
             base.OnPointerDown(slot, pointerData);
 
-            if (!slot.ContainsItem) return;
             if (isShopping) return;
 
             if (pointerData.button == PointerEventData.InputButton.Right)
@@ -196,12 +172,12 @@ namespace Inventory
 
         #endregion
 
-        protected override void InventoryDisable()
+        protected override void DisablePanel()
         {
             Debug.Log("Inventory Disabled");
         }
 
-        protected override void InventoryMinimize()
+        protected override void MinimizePanel()
         {
             Debug.Log("Inventory Minimized");
         }

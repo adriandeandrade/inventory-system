@@ -67,16 +67,16 @@ public class ShopInventory : BaseInventory
 
     protected override void GenerateSlots()
     {
-        if (inventoryData == null)
-        {
-            Debug.LogError($"Inventory object is null. Make sure you specified an inventory data object.");
+        //if (inventoryData == null)
+        //{
+        //    Debug.LogError($"Inventory object is null. Make sure you specified an inventory data object.");
 
-            return;
-        }
+        //    return;
+        //}
 
-        for (int i = 0; i < inventoryData.inventorySize; i++)
+        for (int i = 0; i < slotAmount; i++)
         {
-            GameObject slotInstance = Instantiate(slotPrefab, Vector2.zero, Quaternion.identity, slotParent);
+            GameObject slotInstance = Instantiate(slotPrefab, Vector2.zero, Quaternion.identity, slotContainer);
             slotInstance.name = $"Slot{i}";
 
             BaseItemSlot baseSlot = slotInstance.GetComponent<BaseItemSlot>();
@@ -90,7 +90,7 @@ public class ShopInventory : BaseInventory
             inventorySlots[i] = baseSlot;
         }
 
-        pointerSlot.transform.SetSiblingIndex(slotParent.childCount - 1);
+        pointerSlot.transform.SetSiblingIndex(slotContainer.childCount - 1);
     }
 
     private void GenerateRandomItems()
@@ -134,12 +134,12 @@ public class ShopInventory : BaseInventory
 
     }
 
-    protected override void InventoryDisable()
+    protected override void DisablePanel()
     {
         CloseShop();
     }
 
-    protected override void InventoryMinimize()
+    protected override void MinimizePanel()
     {
         Debug.Log("Shop minimized");
     }

@@ -205,7 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee8cc7a8350967e4c9ac21fb68aa9a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryData: {fileID: 11400000, guid: 58dbabf6eb79b1d4fb8e62ee49d94461, type: 2}
+  slotAmount: 12
   itemDatabase: {fileID: 11400000, guid: bfd5f1ae81b1b9e44a62ce12a36c19a7, type: 2}
   inventoryCloseType: 0
   minimizeButton: {fileID: 5454605178100143189}
@@ -409,6 +409,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3555518269714425978}
     m_Modifications:
+    - target: {fileID: 1416012319223865210, guid: bd055948b157b9041a8ec996953bfe39,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -794
+      objectReference: {fileID: 0}
     - target: {fileID: 1416012319827339296, guid: bd055948b157b9041a8ec996953bfe39,
         type: 3}
       propertyPath: m_Name

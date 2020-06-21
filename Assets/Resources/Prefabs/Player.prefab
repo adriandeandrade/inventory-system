@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7058915441991390353}
   - component: {fileID: 7058915441991390352}
   m_Layer: 0
-  m_Name: PlayerInventory
+  m_Name: Inventory-Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,19 +44,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6f030b597a9bc4eb5457c5b60a4d68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryData: {fileID: 11400000, guid: 05f7e6490643f7e478df1205a56c41de, type: 2}
-  itemDatabase: {fileID: 11400000, guid: bfd5f1ae81b1b9e44a62ce12a36c19a7, type: 2}
-  inventoryCloseType: 0
-  minimizeButton: {fileID: 8097917069238384307}
-  inventorySlots: []
+  slotAmount: 28
+  panelCloseMethod: 0
+  panelCloseButton: {fileID: 8097917069238384307}
   slotPrefab: {fileID: 3043628209561560436, guid: dfb67585fb81abc468bcca05bfb4e511,
     type: 3}
-  slotParent: {fileID: 3503665711757542680}
+  slotContainer: {fileID: 3503665711757542680}
   pointerSlot: {fileID: 5998627899478094156}
-  currentlySelectedSlot: {fileID: 0}
-  slotHoverColor: {r: 1, g: 1, b: 1, a: 1}
-  slotSelectedColor: {r: 1, g: 1, b: 1, a: 1}
-  slotSelectedColor1: {r: 0, g: 0, b: 0, a: 0}
+  itemDatabase: {fileID: 11400000, guid: bfd5f1ae81b1b9e44a62ce12a36c19a7, type: 2}
+  enableOnPointerDown: 1
+  enableOnPointerUp: 1
+  enableOnPointerEnter: 1
+  enableOnPointerExit: 1
+  enableOnDrag: 1
+  enableTooltip: 1
 --- !u!1 &7058915442564089369
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,6 +341,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.wordCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109011632023730485, guid: 3a1ec1dbef0cb004291fd408bc640185,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -354.99997
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109011632023730485, guid: 3a1ec1dbef0cb004291fd408bc640185,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -672
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a1ec1dbef0cb004291fd408bc640185, type: 3}

@@ -3,35 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace Inventory
 {
-    public enum InventoryCloseType { DISABLE, MINIMIZE }
+    public enum PanelCloseMethod { DISABLE, MINIMIZE }
 
     public abstract class BaseInventory : MonoBehaviour, IPointerDownHandler
     {
-        [Header("Base Inventory UI Configuration")]
-        [SerializeField] protected BaseInventoryData inventoryData; // Starting data for the inventory. TODO: Look at base inventory data. Only contains inventory size now.
-        [SerializeField] protected ItemDatabase itemDatabase; // TODO: Move this so it's a static class or singleton.
-
-        [Space]
-        [SerializeField] protected InventoryCloseType inventoryCloseType;
-        [SerializeField] protected ButtonController minimizeButton;
-
-        [Header("Inventory Slot Configuration")]
-        [SerializeField] protected BaseItemSlot[] inventorySlots; // The slots that belong to this inventory.
+        [Header("Base Inventory Configuration")]
+        [SerializeField] protected int slotAmount; // The amount of slots the inventory has.
+        [SerializeField] protected PanelCloseMethod panelCloseMethod; // How the panel should close
+        [SerializeField] protected ButtonController panelCloseButton;
         [SerializeField] protected GameObject slotPrefab;
-        [SerializeField] protected Transform slotParent; // This is what the slots are parented to when the inventory is generated.
-        [Space]
+        [SerializeField] protected Transform slotContainer; // This is what the slots are parented to when the inventory is generated.
         [SerializeField] protected BaseItemSlot pointerSlot; // Basic slot that stores what we select and drag in the inventory.
-        [SerializeField] protected BaseItemSlot currentlySelectedSlot;
 
-        [Header("Slot Outline Colors")]
-        [SerializeField] protected Color slotHoverColor;
-        [SerializeField] protected Color slotSelectedColor;
-        [SerializeField] protected Color slotSelectedColor1;
+        [Header("Other Configuration")]
+        [SerializeField] protected ItemDatabase itemDatabase; // TODO: Move this so it's a static class or singleton.
+        [Space]
+        [Space]
+        [SerializeField] private bool enableOnPointerDown = true;
+        [SerializeField] private bool enableOnPointerUp = true;
+        [SerializeField] private bool enableOnPointerEnter = true;
+        [SerializeField] private bool enableOnPointerExit = true;
+        [SerializeField] private bool enableOnDrag = true;
+        [SerializeField] private bool enableTooltip = true;
 
         // Private Variables
+        protected BaseItemSlot[] inventorySlots; // The actual inventory slots.
+        protected BaseItemSlot currentlySelectedSlot;
 
         // Components
         protected InventoryToolTip toolTip;
@@ -40,20 +41,26 @@ namespace Inventory
         {
             toolTip = FindObjectOfType<InventoryToolTip>();
             
-            if(minimizeButton != null)
+            if(panelCloseButton != null)
             {
-                minimizeButton.OnClicked.AddListener(OnCloseButtonClicked);
+                panelCloseButton.OnClicked.AddListener(OnCloseButtonClicked);
             }
         }
 
         protected virtual void Start()
         {
-            inventorySlots = new BaseItemSlot[inventoryData.inventorySize];
+            inventorySlots = new BaseItemSlot[slotAmount];
             TogglePointer(false);
             GenerateSlots();
         }
 
+        #region Abstract Functions
+
         protected abstract void GenerateSlots();
+        protected abstract void DisablePanel();
+        protected abstract void MinimizePanel();
+
+        #endregion
 
         protected void RegisterSlotEvent(GameObject slotObject, EventTriggerType eventType, UnityAction<BaseEventData> action)
         {
@@ -72,19 +79,17 @@ namespace Inventory
 
         protected void OnCloseButtonClicked()
         {
-            switch(inventoryCloseType)
+            switch(panelCloseMethod)
             {
-                case InventoryCloseType.DISABLE:
-                    InventoryDisable();
+                case PanelCloseMethod.DISABLE:
+                    DisablePanel();
                     break;
-                case InventoryCloseType.MINIMIZE:
-                    InventoryMinimize();
+                case PanelCloseMethod.MINIMIZE:
+                    MinimizePanel();
                     break;
             }
         }
 
-        protected abstract void InventoryDisable();
-        protected abstract void InventoryMinimize();
 
         #region Inventory Functions
 
@@ -102,32 +107,52 @@ namespace Inventory
             }
         }
 
+        public BaseItemSlot HasEmptySlot()
+        {
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                if(!inventorySlots[i].ContainsItem)
+                {
+                    return inventorySlots[i];
+                }
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region Pointer Event Callbacks
 
         protected virtual void OnPointerEnter(BaseItemSlot slot, PointerEventData pointerData)
         {
-            if (toolTip != null) toolTip.UpdateToolTip(slot.ItemInSlot);
+            if (!enableOnPointerEnter) return;
+
+            if (toolTip != null && enableTooltip) toolTip.UpdateToolTip(slot.ItemInSlot);
 
             slot.SetHovered();
         }
 
         protected virtual void OnPointerExit(BaseItemSlot slot, PointerEventData pointerData)
         {
-            if (toolTip != null) toolTip.UpdateToolTip(null);
+            if (!enableOnPointerExit) return;
+
+            if (toolTip != null && enableTooltip) toolTip.UpdateToolTip(null);
 
             if (slot == currentlySelectedSlot)
             {
-                slot.Select();
+                SelectSlot(slot);
                 return;
             }
 
-            slot.Deselect();
+            DeselectSlot(slot);
         }
 
         protected virtual void OnPointerDown(BaseItemSlot slot, PointerEventData pointerData)
         {
+            if (!enableOnPointerDown) return;
+            if (!slot.ContainsItem) return;
+
             if(slot == null)
             {
                 if (currentlySelectedSlot != null) currentlySelectedSlot.Deselect();
@@ -137,12 +162,16 @@ namespace Inventory
         }
         protected virtual void OnPointerUp(BaseItemSlot slot, PointerEventData pointerData)
         {
+            if (!enableOnPointerUp) return;
+
             DeselectSlot(currentlySelectedSlot);
             SelectSlot(slot);
         }
 
         protected virtual void OnDrag(BaseItemSlot slot, PointerEventData pointerData)
         {
+            if (!enableOnDrag) return;
+
             if(pointerSlot != null)
             {
                 pointerSlot.transform.position = Input.mousePosition;
@@ -151,7 +180,7 @@ namespace Inventory
 
         protected virtual void OnRightClick(BaseItemSlot slot, PointerEventData pointerData)
         {
-
+            slot.OnSlotRightClicked(pointerData);
         }
 
         #endregion
